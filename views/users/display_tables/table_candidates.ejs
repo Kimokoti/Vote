@@ -1,0 +1,213 @@
+<div class="row">
+	<div class="col-lg-4 col-lg-offset-4">
+		<div class="label label-primary table_heads">Candidates</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">
+	<div class="form-group">
+		<div class="col-lg-4 col-lg-offset-4"> <input type="text" name="" onkeyup="filter2(this, 'sf', 1)"  placeholder="Enter Search Keyword" class="radius form-control"></div>
+	</div>
+	<br>
+		<table id="sorter" class="table table-bordered table-responsive table_display" style="border:none;background-color:rgba(0, 0, 0, 0.3);
+	}" cellspacing="0" width="100%">
+				<thead style="background-color:#407A52">
+					<tr>
+						<th>Profile Pic</th>
+						<th>Details</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+				<% candidates.forEach( function( candidate ) { %>
+				<tr>
+					<td style="width:180px;">							
+								<img class='prof-pic' id="" src="<%= candidate.photo %>">
+								<br>
+								<%  if(candidate.photo=='photos/avatar.png'){%>
+								
+									<div class="btn btn-danger"  data-toggle="modal" data-target="#modal<%= candidate.cand_id %>"style="display:inline-block;" data-toggle="tooltip" data-placement="left" title="Set Profile Pic">SET PROF PIC</div>
+
+									<div class="modal fade" id="modal<%= candidate.cand_id %>" style='background-color:#006442;' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+									        <h4 class="modal-title" id="myModalLabel">SET PROFILE PIC</h4>
+									      </div>
+									      <div class="modal-body default">
+									       <form id="upload-widget" method="post" action="/upload" class="dropzone">
+										       <input type="hidden" value="<%= candidate.cand_id %>" name="user_id">
+										       <input type="hidden" name="table" value="candidates">
+										          <div class="fallback">
+										            <input name="file" type="file" />
+										          </div>
+									       </form> 
+
+									       <script type="text/javascript">
+										      Dropzone.options.uploadWidget = {
+										        paramName: 'file',
+										        maxFilesize: 5, // MB
+										        maxFiles: 5,
+										        addRemoveLinks:true,
+										        dictDefaultMessage: 'Drag an image here to upload, or click to select one',
+										        headers: {
+										          'x-csrf-token': document.querySelectorAll('meta[name=csrf-token]')[0].getAttributeNode('content').value,
+										        },
+										        acceptedFiles: 'image/*',
+										        init: function() {
+										          this.on('success', function( file, resp ){
+										            console.log( file );
+										            console.log( resp );
+										          });
+										          this.on('thumbnail', function(file) {
+										            if ( file.width < 320 || file.height < 240) {
+										              file.rejectDimensions();
+										            } else {
+										              file.acceptDimensions();
+										            }
+										          });
+										        },
+										        accept: function(file, done) {
+										          file.acceptDimensions = done;
+										          file.rejectDimensions = function() {
+										            done('The image must be at least 640 x 480px')
+										          };
+										        }
+										      };
+    									   </script>
+
+
+									      </div>
+									      <div class="modal-footer">
+									        
+									      </div>
+									    </div>
+									  </div>
+									</div> 
+
+								<% }else{ %>
+									<div class="btn btn-success"  data-toggle="modal" data-target="#modal<%= candidate.cand_id %>"style="display:inline-block;" data-toggle="tooltip" data-placement="left" title="Change Profile Pic">CHANGE PROF PIC</i></div>
+
+									<div class="modal fade" id="modal<%= candidate.cand_id %>" style='background-color:#006442;' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									  <div class="modal-dialog">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+									        <h4 class="modal-title" id="myModalLabel">SET PROFILE PIC</h4>
+									      </div>
+									      <div class="modal-body default">
+									       <form id="upload-widget" method="post" action="/upload" class="dropzone">
+										       <input type="hidden" value="<%= candidate.cand_id %>" name="user_id">
+										       <input type="hidden" name="table" value="candidates">
+										          <div class="fallback">
+										            <input name="file" type="file" />
+										          </div>
+									       </form> 
+
+									       <script type="text/javascript">
+										      Dropzone.options.uploadWidget = {
+										        paramName: 'file',
+										        maxFilesize: 5, // MB
+										        maxFiles: 5,
+										        addRemoveLinks:true,
+										        dictDefaultMessage: 'Drag an image here to upload, or click to select one',
+										        headers: {
+										          'x-csrf-token': document.querySelectorAll('meta[name=csrf-token]')[0].getAttributeNode('content').value,
+										        },
+										        acceptedFiles: 'image/*',
+										        init: function() {
+										          this.on('success', function( file, resp ){
+										            console.log( file );
+										            console.log( resp );
+										          });
+										          this.on('thumbnail', function(file) {
+										            if ( file.width < 320 || file.height < 240) {
+										              file.rejectDimensions();
+										            } else {
+										              file.acceptDimensions();
+										            }
+										          });
+										        },
+										        accept: function(file, done) {
+										          file.acceptDimensions = done;
+										          file.rejectDimensions = function() {
+										            done('The image must be at least 640 x 480px')
+										          };
+										        }
+										      };
+    									   </script>
+
+
+									      </div>
+									      <div class="modal-footer">
+									        
+									      </div>
+									    </div>
+									  </div>
+									</div> 
+								<% } %>							
+						</td>
+					<td>
+						<ul>
+							<!--<li class="list-group-item"><%= candidate.cand_id %></li>-->
+							<li class="list-group-item"><span style='width:30%;display:inline-block;'>Registration No</span><%= candidate.reg_ID %></li>
+							<li class="list-group-item"><span style='width:30%;display:inline-block;'> Name</span><%= candidate.cand_name %></li>
+							<li class="list-group-item"><span style='width:30%;display:inline-block;'>Gender</span><%= candidate.gender %></li>
+							<li class="list-group-item"><span style='width:30%;display:inline-block;'>Email</span><%= candidate.email %></li>
+							<li class="list-group-item"><span style='width:30%;display:inline-block;'>Position</span><%= candidate.post %></li>
+							<li class="list-group-item">
+							<span style='width:30%;display:inline-block;'>Action</span>
+								<% if(candidate.cand_status=='yes'){ %>
+								<button class="btn disabled btn-success"><i class="fa fa-check-circle-o fa-lg"></i></button>
+								<%  }else{ %>
+									<button class="btn disabled btn-danger" data-toggle="tooltip" data-placement="left" title="Candidate Locked/Disqualified"><i class="fa fa-exclamation-circle fa-lg"></i></button>
+								<%  } %>
+								
+								<button class="btn btn-success" data-toggle="tooltip" data-placement="left" title="Edit Candidate"><i class="fa fa-edit fa-lg"></i></button>
+								
+								<% if(candidate.cand_status=='yes'){ %>
+									<button class="btn btn-danger" data-toggle="tooltip" data-placement="left" title="Lock Candidate" ><i class="fa fa-lock fa-lg"></i></button>
+								<%  }else{ %>
+									<button class="btn btn-success" data-toggle="tooltip" data-placement="left" title="Unlock Candidate"><i class="fa fa-unlock fa-lg"></i></button>
+								<%  } %>
+							</li>
+						</ul>
+					</td>	
+				</tr>					
+				<% }) %>
+				</tbody>
+				
+		</table>
+
+		<% if (pageCount > 1) { %>
+	        <ul class="pagination">
+	            <% if (currentPage > 1) { %>
+	                <li><a href="/dc?page=1">&laquo;</a></li>
+	            <% } %>
+	            <% var i = 1;
+	            if (currentPage > 5) {
+	                i = +currentPage - 4;
+	            } %>
+	            <% if (i !== 1) { %>
+	                <li class="disabled"><a href="#">...</a></li>
+	            <% } %>
+	            <% for (i; i<=pageCount; i++) { %>
+	                <% if (currentPage == i) { %>
+	                    <li class="active"><span><%= i %> <span class="sr-only">(current)</span></span></li>
+	                <% } else { %>
+	                    <li><a href="/dc?page=<%= i %>"><%= i %></a></li>
+	                <% } %>
+	                <% if (i == (+currentPage + 4)) { %>
+	                    <li class="disabled"><a href="#">...</a></li>
+	                <% break; } %>
+	            <% } %>
+	            <% if (currentPage != pageCount) { %>
+	                <li><a href="/dc?page=<%= pageCount %>">&raquo;</a></li>
+	            <% } %>
+	        </ul>
+	    <% } %>
+	</div>
+</div>
+
+

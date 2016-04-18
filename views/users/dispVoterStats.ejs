@@ -1,0 +1,88 @@
+<head>
+	<%= include ../head %>
+	<title><%= title %></title>
+</head>
+<body onload="timer()">
+<%= include navbar  %>
+</nav>
+	<div class="container-fluid" style="margin-top:60px;">
+		<div class="row">
+			<div class="col-lg-3"><%= include sidenavA %></div>
+			<div class="col-lg-6">
+			<div class="label label-primary table_heads">Registered Voter Stats</div>
+				<table class="table">
+					<thead>
+						<th>Gender</th>
+						<th>Number</th>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Total Reg Voters</td>
+							<td><%= voterCount  %></td>
+						</tr>
+						<tr>							
+							<td>Male</td>
+							<td><%= mVC %></td>
+						</tr>
+						<tr>
+							<td>Female</td>
+							<td><%= fVC %></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="label label-primary table_heads">Registered Candidate Stats</div>
+				<table class="table">
+					<thead>
+						<th>Gender</th>
+						<th>Number</th>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Total Reg Candidates</td>
+							<td><%= candCount %></td>
+						</tr>
+						<tr>							
+							<td>Male</td>
+							<td><%= mCC %></td>
+						</tr>
+						<tr>							
+							<td>Female</td>
+							<td><%= fCC %></td>
+
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="label label-primary table_heads">Voter Residence Stats</div>
+				<table class="table">
+					<thead>
+						<th>Residence</th>
+						<th>Registered</th>
+						<th>Voted</th>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Inside Campus</td>
+							<td><%= rres %></td>
+							<td><%= vres %></td>
+						</tr>
+						<tr>							
+							<td>Outside Campus</td>
+							<td><%= rnon_res %></td>
+							<td><%= vnon_res %></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-lg-3">
+				<%= include profile  %>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		  var socket=io();
+		  socket.on('feedback',function(data){
+		  	window.location.reload(true);
+		  });
+	</script>
+</body>

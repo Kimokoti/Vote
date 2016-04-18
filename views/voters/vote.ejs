@@ -1,0 +1,448 @@
+<head>
+	<%- include('../head')  %>
+	<title><%= title %></title>
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Expires" content="-1">
+</head>
+<script type="text/javascript">
+	function uncheck(){
+		$("input:radio[name=PC]:checked")=undefined;
+		$("input:radio[name=PA]:checked")='';
+		$("input:radio[name=PA]:checked").val();
+		$("input:radio[name=PD]:checked").val();
+	}
+</script>
+<body onload="timer();uncheck()" style="background-color:#6b9362">
+
+<%= include navbar  %>
+</nav>
+	<div class="container-fluid" style="margin-top:60px;">
+		<div class="row">
+			<div class="col-lg-3">
+			<%= include sidenavB %>
+			<%= include profile  %>
+			</div>
+			<div class="col-lg-9">
+				
+				<div class="row">
+						<div id="voting-sec">
+						<div class="col-lg-3 well" style="border:1px solid green;border-radius:5px;">
+							<h1 class="btn btn-primary disabled btn-block">President</h1>
+								<span class="radio">
+				                    <label style="font-size: 1em">
+				                    <span id='capc' style="width:150px;display:inline-block;"><%= candidates[8].cand_name %></span>
+				                        <input type="radio" name="PC" value="pca"/>
+				                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+				                    </label>
+				                    <span id='p1'></span>
+				                </span><br/>			
+								<span class="radio">
+					                    <label style="font-size: 1em">
+					                    <span id='cbpc' style="width:150px;display:inline-block;"><%= candidates[9].cand_name %></span>
+					                        <input name="PC" value="pcb" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                    <span id='p2'></span>
+					             </span><br/>
+					             <span class="radio">
+					                    <label style="font-size: 1em">
+					                    <span id='ccpc' style="width:150px;display:inline-block;"><%= candidates[10].cand_name %></span>
+					                        <input name="PC" value="pcc" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                    <span id='p3'></span>					              
+					             </span>
+
+					             <br/>
+					             <span class="radio">
+					                    <label style="font-size: 1em">
+					                    <span id='cdpc' style="width:150px;display:inline-block;"><%= candidates[11].cand_name %></span>
+					                        <input name="PC" value="pcd" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                    <span id='p4'></span>
+					             </span><br/>
+					             
+						</div>
+						<div class="col-lg-3 well" style="border:1px solid green;border-radius:5px;">
+							<h1 class="btn btn-primary disabled btn-block">Accommodation</h1>
+								<span class="radio">
+				                    <label style="font-size: 1em">
+				                   <span id='capa' style="width:150px;display:inline-block;"><%= candidates[0].cand_name %></span>
+				                       <input name="PA" value="paa" type="radio">
+				                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+				                    </label>
+				                     <span id='A1'></span>
+				                </span><br/>			
+								<span class="radio">
+					                    <label style="font-size: 1em">
+					                    <span id='cbpa' style="width:150px;display:inline-block;"><%= candidates[1].cand_name %></span>
+					                        <input name="PA" value="pab" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                     <span id='A2'></span>
+					             </span><br/>
+					             <span class="radio">
+					                    <label style="font-size: 1em">
+					                    <span id='ccpa' style="width:150px;display:inline-block;"><%= candidates[2].cand_name %></span>
+					                        <input name="PA" value="pac" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                     <span id='A3'></span>
+					             </span><br/>
+					             <span class="radio">
+					                    <label style="font-size: 1em">
+					                    <span id='cdpa' style="width:150px;display:inline-block;"><%= candidates[3].cand_name %></span>
+					                        <input name="PA" value="pad" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                     <span id='A4'></span>
+					        
+						</div>
+						<div class="col-lg-3 well" style="border:1px solid green;border-radius:5px;">
+							<h1 class="btn btn-primary disabled btn-block">Finance</h1>
+							<span class="radio">
+				                    <label style="font-size: 1em">
+				                   <span id='capb' style="width:150px;display:inline-block;"><%= candidates[4].cand_name %></span>
+				                       <input name="PB" value="pba" type="radio">
+				                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+				                    </label>
+				                     <span id='F1'></span>
+				                </span><br/>			
+								<span class="radio">
+					                    <label style="font-size: 1em">
+					                    <span id='cbpb' style="width:150px;display:inline-block;"><%= candidates[5].cand_name %></span>
+					                        <input name="PB" value="pbb" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                     <span id='F2'></span>
+					             </span><br/>
+					             <span class="radio">
+					                    <label style="font-size: 1em">
+					                   <span id='ccpb' style="width:150px;display:inline-block;"><%= candidates[6].cand_name %></span>
+					                        <input name="PB" value="pbc" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                     <span id='F3'></span>
+					             </span><br/>
+					              <span class="radio">
+					                    <label style="font-size: 1em">
+					                   <span id='cdpb' style="width:150px;display:inline-block;"><%= candidates[7].cand_name %></span>
+					                        <input name="PB" value="pbd" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                     <span id='F4'></span>
+					             </span><br/>
+					        
+						</div>
+
+						<div class="col-lg-3 well" style="border:1px solid green;border-radius:5px;">
+							<h1 class="btn btn-primary disabled btn-block">Sports And Gender</h1>
+							<span class="radio">
+				                    <label style="font-size: 1em">
+				                   <span id='capd' style="width:150px;display:inline-block;"><%= candidates[12].cand_name %></span>
+				                       <input name="PD" value="pda" type="radio">
+				                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+				                    </label>
+				                     <span id='S1'></span>
+				                </span><br/>			
+								<span class="radio">
+					                    <label style="font-size: 1em">
+					                    <span id='cbpd' style="width:150px;display:inline-block;"><%= candidates[13].cand_name %></span>
+					                        <input name="PD" value="pdb" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                     <span id='S2'></span>
+					             </span><br/>
+					             <span class="radio">
+					                    <label style="font-size: 1em">
+					                   <span id='ccpd' style="width:150px;display:inline-block;"><%= candidates[14].cand_name %></span>
+					                        <input name="PD" value="pdc" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                     <span id='S3'></span>
+					             </span><br/>
+					              <span class="radio">
+					                    <label style="font-size: 1em">
+					                   <span id='cdpd' style="width:150px;display:inline-block;"><%= candidates[15].cand_name %></span>
+					                        <input name="PD" value="pdd" type="radio">
+					                        <span class="cr"><i class="cr-icon fa fa-check-circle"></i></span>    
+					                    </label>
+					                     <span id='S4'></span>
+					       
+						</div>
+						</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6 col-lg-offset-3 well" style="background-color:#CA6924;border:2px solid #89C4F4;border-radius:5px;">
+							<h4>My Choices</h4>
+							<h4>
+								<span class='btn btn-sm btn-default' style='width:120px;display:inline-block'>President&nbsp</span>
+								<span style='width:140px;display:inline-block' id='pc'></span>
+							</h4>
+							<h4>	
+								<span class='btn btn-sm btn-default' style='width:120px;display:inline-block'>Accommodation&nbsp</span>
+								<span style='width:140px;display:inline-block' id='pa'></span>
+							</h4>
+							<h4>
+								<span class='btn btn-sm btn-default' style='width:120px;display:inline-block'>Finance&nbsp</span>
+								<span style='width:140px;display:inline-block' id='pb'></span>
+							</h4>
+							<h4>
+								<span class='btn btn-sm btn-default' style='width:120px;display:inline-block'>Sports &amp Gender</span>
+								<span style='width:140px;display:inline-block' id='pd'></span>
+							</h4>
+							<div id="result"></div>
+							<button id="vote" class="btn btn-xs btn-block btn-primary">VOTE</button>
+						</div>
+				</div>							
+			</div>	
+		</div>
+		<!-- Voting Section End -->
+		
+	</div>
+</div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+	var socket=io();
+	$('#vote').click(function(event){
+		$selA=$("input:radio[name=PA]:checked").val(); //Accommodation
+		$selB=$("input:radio[name=PB]:checked").val(); //Finance
+		$selC=$("input:radio[name=PC]:checked").val(); //President
+		$selD=$("input:radio[name=PD]:checked").val(); //Sports and Gender
+		if(!$selA && !$selB && !$selC && !$selD){
+			alert("Please Make Atleast One Choice Before Voting");
+		}else if(!$selA || !$selB || !$selC || !$selD){
+			var yn=confirm("Are You Sure You want To Omit Some Posts");
+			if(yn==true){
+				socket.emit('vote',{A:$selA,B:$selB,C:$selC,D:$selD,email:"<%= information.email %>",reg_ID:"<%= information.reg_ID %>",residence:"<%= information.residence %>",gender:"<%= information.gender %>"});
+			}
+		}else if($selA &&  $selB && $selC && $selD){
+			var yn=confirm("Do You Want To Proceed With Your Choices ?");
+			if(yn==true){
+				socket.emit('vote',{A:$selA,B:$selB,C:$selC,D:$selD,email:"<%= information.email %>",reg_ID:"<%= information.reg_ID %>",residence:"<%= information.residence %>",gender:"<%= information.gender %>"});
+			}
+		}
+	});
+	socket.on("feedback",function(data){
+		$("#result").html("<span class='btn btn-success btn-block'>Done Voting</span>");
+		$("#voting-sec").hide(2000);
+		setTimeout(function(){
+			$("#result").html("");
+			$("#vote").hide();
+			window.location.reload(true);
+		},5000);		
+	});
+
+	//President
+	$("input:radio[name=PC]").change(function(){
+		var id;
+		if($("input:radio[name=PC]:checked").val()=='pca'){
+			for(var i=1;i<=4;i++){
+				if(i==1) $("#p1").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#p"+i).html('');
+			}
+			id='#capc';
+		}else if($("input:radio[name=PC]:checked").val()=='pcb'){
+			for(var i=1;i<=4;i++){
+				if(i==2) $("#p2").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#p"+i).html('');
+			}
+			id='#cbpc';
+		}else if($("input:radio[name=PC]:checked").val()=='pcc'){
+			for(var i=1;i<=4;i++){
+				if(i==3) $("#p3").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#p"+i).html('');
+			}
+			id='#ccpc';
+		}else if($("input:radio[name=PC]:checked").val()=='pcd'){
+			for(var i=1;i<=4;i++){
+				if(i==4) $("#p4").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#p"+i).html('');
+			}
+			id='#cdpc';
+		}
+		$("#pc").addClass("btn btn-sm btn-success");
+		$("#pc").html($(id).html());
+	});
+	
+
+	//Accommodation
+	$("input:radio[name=PA]").change(function(){
+		var id;
+		if($("input:radio[name=PA]:checked").val()=='paa'){
+			for(var i=1;i<=4;i++){
+				if(i==1) $("#A1").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#A"+i).html('');
+			}
+			id='#capa';
+		}else if($("input:radio[name=PA]:checked").val()=='pab'){
+			for(var i=1;i<=4;i++){
+				if(i==2) $("#A2").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#A"+i).html('');
+			}
+			id='#cbpa';
+		}else if($("input:radio[name=PA]:checked").val()=='pac'){
+			for(var i=1;i<=4;i++){
+				if(i==3) $("#A3").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#A"+i).html('');
+			}
+			id='#ccpa';
+		}else if($("input:radio[name=PA]:checked").val()=='pad'){
+			for(var i=1;i<=4;i++){
+				if(i==4) $("#A4").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#A"+i).html('');
+			}
+			id='#cdpa';
+		}
+		$("#pa").addClass("btn btn-sm btn-success");
+		$("#pa").html($(id).html());
+	});
+
+	//Finance
+	$("input:radio[name=PB]").change(function(){
+		var id;
+		if($("input:radio[name=PB]:checked").val()=='pba'){
+			for(var i=1;i<=4;i++){
+				if(i==1) $("#F1").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#F"+i).html('');
+			}
+			id='#capb';
+		}else if($("input:radio[name=PB]:checked").val()=='pbb'){
+			for(var i=1;i<=4;i++){
+				if(i==2) $("#F2").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#F"+i).html('');
+			}
+			id='#cbpb';
+		}else if($("input:radio[name=PB]:checked").val()=='pbc'){
+			for(var i=1;i<=4;i++){
+				if(i==3) $("#F3").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#F"+i).html('');
+			}
+			id='#ccpb';
+		}else if($("input:radio[name=PB]:checked").val()=='pbd'){
+			for(var i=1;i<=4;i++){
+				if(i==4) $("#F4").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#F"+i).html('');
+			}
+			id='#cdpb';
+		}
+		$("#pb").addClass("btn btn-sm btn-success");
+		$("#pb").html($(id).html());
+	});
+	
+	//Sports and Gender
+	$("input:radio[name=PD]").change(function(){
+		var id;
+		if($("input:radio[name=PD]:checked").val()=='pda'){
+			for(var i=1;i<=4;i++){
+				if(i==1) $("#S1").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#S"+i).html('');
+			}
+			id='#capd';
+		}else if($("input:radio[name=PD]:checked").val()=='pdb'){
+			for(var i=1;i<=4;i++){
+				if(i==2) $("#S2").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#S"+i).html('');
+			}
+			id='#cbpd';
+		}else if($("input:radio[name=PD]:checked").val()=='pdc'){
+			for(var i=1;i<=4;i++){
+				if(i==3) $("#S3").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#S"+i).html('');
+			}
+			id='#ccpd';
+		}else if($("input:radio[name=PD]:checked").val()=='pdd'){
+			for(var i=1;i<=4;i++){
+				if(i==4) $("#S4").html('<img style="width:35px;height:35px" src="images/tick.jpg">');
+				else $("#S"+i).html('');
+			}
+			id='#cdpd';
+		}
+		$("#pd").addClass("btn btn-sm btn-success");
+		$("#pd").html($(id).html());
+	});
+
+
+//Functionality Not Complete
+	socket.on('error',function(data){
+		var res=confirm(data.msg);
+		if(res==true){
+			socket.emit('error_msg',{'msg':data.msg,'from':"<%= information.email %>",'msg_type':data.msg_type});
+		}
+	});
+</script>
+
+<style type="text/css">
+.checkbox label:after, 
+.radio label:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+.checkbox .cr,
+.radio .cr {
+    position: relative;
+    display: inline-block;
+    border: 2px solid green;
+    border-radius: .25em;
+    width: 1.3em;
+    height: 1.3em;
+    float: left;
+    margin-right: .5em;
+    color: red;
+}
+
+.radio .cr {
+    border-radius: 75%;
+    border-color: green;
+}
+
+.checkbox .cr .cr-icon,
+.radio .cr .cr-icon {
+    position: absolute;
+    font-size: .8em;
+    line-height: 0;
+    top: 50%;
+    left: 20%;
+}
+
+.radio .cr .cr-icon {
+    margin-left: 0.04em;
+}
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+    display: none;
+}
+
+.checkbox label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+    transform: scale(3) rotateZ(-220deg);
+    opacity: 0;
+    transition: all .7s ease-in;
+}
+
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+    transform: scale(1) rotateZ(0deg);
+    opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled + .cr,
+.radio label input[type="radio"]:disabled + .cr {
+    opacity: .5;
+}
+
+.well{
+	background-color: #FFF;
+	color: #000;
+}
+</style>
+			</div>
+			
+		</div>
+	</div>
+</body>

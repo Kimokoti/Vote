@@ -1,0 +1,108 @@
+<div class="well reg-form">
+                    <form class="form-horizontal" method="post" id="reg_users"  action="ru">
+                        <fieldset>
+                            <legend class="table_heads">Register User</legend>
+
+                            <input type="hidden" id="userType" name="userType" value="user">
+
+                            <div class="form-group form-reg">
+                                    <div class="col-lg-10 col-lg-offset-2 reg_error" id="error-username">                                       
+                                    </div>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="userName" class="col-lg-2 control-label">User Name</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="userName" name="userName" placeholder="User Name" type="text">
+                                </div>
+                            </div>
+
+                            <div class="form-group form-reg">
+                                    <div class="col-lg-10 col-lg-offset-2 reg_error" id="error-address">                                      
+                                    </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="inputEmail" name="inputEmail" placeholder="Email" type="text">
+                                </div>
+                            </div>
+
+                            <div class="form-group form-reg">
+                                    <div class="col-lg-10 col-lg-offset-2 reg_error" id="error-id">                                       
+                                    </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="idNumber"  class="col-lg-2 control-label">ID Number</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="idNumber" name="idNumber" placeholder="Id Number" type="text">
+                                </div>
+                            </div>
+
+                            <div class="form-group form-reg">
+                                    <div class="col-lg-10 col-lg-offset-2 reg_error" id="error-gender">                                       
+                                    </div>
+                            </div>
+
+                             <div class="form-group">
+                                <label for="rad_gender" class="col-lg-2 control-label">Gender</label>
+                                <div class="col-lg-10">      
+                                        <label class="radio-inline">
+                                            <input type="radio" name="rad_gender" id="gender1" value="Female" >Female
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="rad_gender" id="gender2" value="Male" >Male
+                                        </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group form-reg">
+                                    <div class="col-lg-10 col-lg-offset-2 reg_error" id="error-position">                 
+                                    </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="position" class="col-lg-2 control-label">Position</label>
+                                <div class="col-lg-10">
+                                    <select class="form-control" name="position" id="position">
+                                        <option></option>
+                                        <option value="admin">Administrator</option>
+                                        <option value="officer">Officer</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group form-reg">
+                                    <div class="col-lg-10 col-lg-offset-2 reg_error" id="error-pass">                                        
+                                    </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="inputPassword" name="password" placeholder="Password" type="password">
+                                </div>
+                            </div>
+
+                            <div class="form-group form-reg">
+                                    <div class="col-lg-10 col-lg-offset-2 reg_error" id="error-confpass">                                      
+                                    </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="conf_password" class="col-lg-2 control-label">Confirm Password</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" id="inputPasswordConf" placeholder="Confirm Password" name="conf_password" type="password">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-lg-offset-8">
+                                    <input type="submit" name="reg" id="register" value="REGISTER USER" class="btn btn-success">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+</div>
+                

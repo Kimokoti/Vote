@@ -1,0 +1,21 @@
+{
+  "name": "voting",
+  "version": "1.0.0",
+  "description": "A realtime E-Voting System",
+  "main": "server.js",
+  "scripts": {
+    "test": "start voting"
+  },
+  "keywords": [
+    "nodejs",
+    "realtime",
+    "voting",
+    "express",
+    "redis",
+    "dropzone",
+    "multer",
+    "MariaDB"
+  ],
+  "author": "Kimokoti Brian",
+  "license": "ISC"
+}

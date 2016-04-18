@@ -1,0 +1,130 @@
+<head>
+	<%= include head %>
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12 header-sec">
+			<%= include header %>
+		</div>
+	</div>
+</div>
+<div class="container">
+<div class="row">
+	<div class="row">
+		<div class="col-lg-4"></div>
+		<div class="col-lg-4"></div>
+		<div class="col-lg-4">
+			<%- button_sign %>
+      <%- profile %>
+		</div>	
+	</div>	
+<!-- Modal -->
+<div class="modal fade" id="squarespaceModal" style='background-color:#006442;' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">LOGIN</h4>
+      </div>
+      <div class="modal-body default">
+       <form method="post" action="login" id="loginForm" name="login">
+       		  
+       		  <div class="form-group">
+             		  	<label for="login_with" >Login Using</label>
+             		  	<div class="row">
+             		  		<div class="col-lg-12" id="error_login_using"></div>
+             		  	</div>
+
+             		  	<label class="radio-inline">
+      				          <input type="radio" name="login_with" id="mode1" value="reg_number"> Registration Number
+      				      </label>
+            				<label class="radio-inline">
+            				  <input type="radio" name="login_with" id="mode2" value="id_number"> ID Number
+            				</label>
+            				<label class="radio-inline">
+            				  <input type="radio" name="login_with" id="mode3" value="email"> Email Address
+            				</label>
+       		  </div>
+
+              <div class="form-group">
+                <label for="address" id="mode"></label>                
+                <div class="row">
+                	<div class="col-lg-12" id="error-email"></div>
+                </div>
+                <input type="text" name="address" id="email" class="form-control" placeholder="Enter email, Id Number or Reg Number">
+              </div>
+              
+              <div class="form-group">
+                <label for="password" id="lbl_pass"class="form-label">Password</label>               
+                <div class="row">
+                	<div class="col-lg-12" id="error-pwd"></div>
+                </div>               
+                <input type="password"  name="password" id="pwd" class="form-control"  placeholder="Enter Password">
+                <div class="row">
+                	<div class="col-lg-12" id="error-login"></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-lg-offset-4">
+                  <input type="submit" id="login-submit" class="btn btn-profile center-block btn-login" value="Login">
+                </div>
+              </div>
+        </form>   
+      </div>
+      <div class="modal-footer">
+        
+      </div>
+    </div>
+  </div>
+</div>		
+<div class="row">
+<div id="result"></div>
+	<div class="col-lg-12">
+		<%= include tables_results/table_president %>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<%= include tables_results/table_accomm %>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<%= include tables_results/table_finance %>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<%= include tables_results/table_gender %>
+	</div>
+</div>
+</div>	
+</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12">
+			<%= include footer %>
+		</div>
+	</div>
+</div>	
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+  var socket=io();
+
+  socket.on('feedback',function(data){
+    var votes=data.votes;
+    for(var x in votes){
+      $("#"+x).html(votes[x]);
+    }
+  });
+  socket.on('error_info',function(error_msg){
+    $("#errors").append("<div class='well'>From:"+error_msg.from+"<br>Type:"+error_msg.msg_type+"Message:"+error_msg.msg+"</div>");
+  });
+
+  socket.on('connect',function(){
+    socket.emit("nimeconnect");
+  });
+</script>
+
+</body>

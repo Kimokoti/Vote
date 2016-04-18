@@ -1,0 +1,82 @@
+<head>
+	<%- include('../head')  %>
+	<title><%= title %></title>
+</head>
+<body onload="timer()" style="background-color:#6b9362">
+
+<%= include navbar  %>
+</nav>
+	<div class="container-fluid" style="margin-top:60px;margin-left:2%">
+		<div class="row">
+			<div class="col-lg-3">
+				<%= include sidenavB %>
+			</div>
+			<div class="col-lg-6" style="padding:2% 2% 2% 3%">
+				
+				<div class="row">
+					<div class="row">
+						<div class="col-lg-8 well" style="border:1px solid white;border-radius:5px;background-color:#E68364">
+							<h1 class="btn btn-danger disabled btn-block" style="border:1px solid white;">President</h1>
+							<span id='capa' style="width:150px;display:inline-block;">Mark Welberg</span><span id='paa'><%=  %></span><br/>
+							<span id='cbpa' style="width:150px;display:inline-block;">Scott McCole</span><span id='pab'><%=  %></span><br/>
+							<span id='ccpa' style="width:150px;display:inline-block;">Sarah LancasterPAC</span><span id='pac'><%=  %></span><br/>
+							<span id='cdpa' style="width:150px;display:inline-block;">Sarah LancasterPAC</span><span id='pac'><%=  %></span><br/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-9 well" style="border:1px solid white;border-radius:5px;background-color:#87D37C">
+							<h1 class="btn btn-success disabled btn-block" style="border:1px solid white;">Accommodation</h1>
+							<span id='capb' style="width:150px;display:inline-block;">Jessica Alba</span><span id='pba'><%= %></span><br/>
+							<span id='cbpb' style="width:150px;display:inline-block;">Will Smith</span><span id='pbb'><%=  %></span></br/>
+							<span id='ccpb' style="width:150px;display:inline-block;">Yvonne Strahvoski</span><span id='pbc'><%=  %></span><br/>
+							<span id='cdpb' style="width:150px;display:inline-block;">Yvonne Strahvoski</span><span id='pbc'><%=  %></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-10 well" style="border:1px solid white;border-radius:5px;background-color:#FFB94E">
+							<h1 class="btn btn-warning disabled btn-block" style="border:1px solid white;">Finance</h1>
+							<span id='capc' style="width:150px;display:inline-block;">Joshua Gomez</span><span id='pca'><%=  %></span><br/>
+							<span id='cbpc' style="width:150px;display:inline-block;">Sandra Bullock</span><span id='pcb'><%= %></span><br/>
+							<span id='ccpc' style="width:150px;display:inline-block;">Dylan O'Brien</span><span id='pcc'><%=  %></span><br/>
+							<span id='cdpc' style="width:150px;display:inline-block;">Dylan O'Brien</span><span id='pcc'><%=  %></span><br/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-11 well" style="border:1px solid white;border-radius:5px;background-color:#89C4FE">
+							<h1 class="btn btn-primary disabled btn-block" style="border:1px solid white;">Finance</h1>
+							<span id='capc' style="width:150px;display:inline-block;">Joshua Gomez</span><span id='pca'><%=  %></span><br/>
+							<span id='cbpc' style="width:150px;display:inline-block;">Sandra Bullock</span><span id='pcb'><%= %></span><br/>
+							<span id='ccpc' style="width:150px;display:inline-block;">Dylan O'Brien</span><span id='pcc'><%=  %></span><br/>
+							<span id='cdpc' style="width:150px;display:inline-block;">Dylan O'Brien</span><span id='pcc'><%=  %></span><br/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<%= include profile  %>
+			</div>
+			<script src="/socket.io/socket.io.js"></script>
+			<script type="text/javascript">
+				var socket=io();
+				$("#click").click(function(event){
+					socket.emit('event',{'page':' From Page 2'});
+				});
+
+				socket.on('feedback',function(data){
+					$("#result").append("Feedback Received<br>")
+					var votes=data.votes;
+					for(var x in votes){
+						$("#"+x).html(votes[x]);
+						setTimeout(function(){
+							$("#"+x).attr('color','red')
+						},1000);
+					}
+				});
+				socket.on('error_info',function(error_msg){
+					$("#errors").append("<div class='well'>From:"+error_msg.from+"<br>Type:"+error_msg.msg_type+"Message:"+error_msg.msg+"</div>");
+				});
+			</script>
+			</div>
+		</div>
+	</div>
+</body>

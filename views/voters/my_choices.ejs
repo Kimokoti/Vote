@@ -1,0 +1,44 @@
+<head>
+	<%- include('../head')  %>
+	<title><%= title %></title>
+</head>
+<body onload="timer()" style="background-color:#6b9362">
+
+<%= include navbar  %>
+</nav>
+	<div class="container-fluid" style="margin-top:60px;">
+		<div class="row">
+			<div class="col-lg-3"><%= include sidenavB %></div>
+			<div class="col-lg-6">
+				<%- msg %>
+				<table class="table table-responsive  table-hover">
+					<thead style="background-color:#264348;color:#fff">
+						<td>Election Post</td>
+						<td>My Choice</td>
+					</thead>
+					<tbody>
+						<tr class="">
+							<td><span class="btn btn-block btn-danger">President</span></td>
+							<td><span class="btn btn-block btn-danger"><%= choices.postC %></span></td>
+						</tr>
+						<tr class="">
+							<td><span class="btn btn-block btn-success">Accommodation</span></td>
+							<td><span class="btn btn-block btn-success"><%= choices.postA %></span></td>
+						</tr>
+						<tr class="">
+							<td><span class="btn btn-block btn-warning">Finance</span></td>
+							<td><span class="btn btn-block btn-warning"><%= choices.postB %></span></td>
+						</tr>
+						<tr class="">
+							<td><span class="btn btn-block btn-info">Sports &amp Gender</span></td>
+							<td><span class="btn btn-block btn-info"><%= choices.postD %></span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-lg-3">
+				<%= include profile  %>
+			</div>
+		</div>
+	</div>
+</body>

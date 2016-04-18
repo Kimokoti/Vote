@@ -1,0 +1,793 @@
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="alertify/css/alertify.core.css" />
+	<link rel="stylesheet" href="alertify/css/alertify.bootstrap.css" />
+	<link rel="stylesheet" href="alertify/css/alertify.default.css" id="toggleCSS" />
+	
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/timeline.css">
+	<link rel="stylesheet" type="text/css" href="css/steps.css">
+	<script src="js/JQuery 2.1.3.js"></script>
+	<script src="alertify/js/alertify.js"></script>
+	<script src="bootstrap/js/bootstrap.js"></script>
+	<link rel="stylesheet" href="dropzone/dist/dropzone.css">
+
+<!-- Bootstrap data tables-->
+	<link rel="stylesheet" type="text/css" href="bstrap_tables/media/css/dataTables.bootstrap.css">
+	<style type="text/css" class="init"></style>
+	<script type="text/javascript" language="javascript" src="bstrap_tables/media/js/jquery.dataTables.js">
+	</script>
+	<script type="text/javascript" language="javascript" src="bstrap_tables/media/js/dataTables.bootstrap.js">
+	</script>
+	<script type="text/javascript" src="dropzone/dist/dropzone.js"></script>
+	<script type="text/javascript" language="javascript" class="init">
+		$(document).ready(function() {
+			$('table#table_results').DataTable();
+		} );
+	</script>
+	<script>
+	function reset () {
+				$("#toggleCSS").attr("href", "css/alertify.default.css");
+				alertify.set({
+					labels : {
+						ok     : "OK",
+						cancel : "Cancel"
+					},
+					delay : 5000,
+					buttonReverse : false,
+					buttonFocus   : "ok"
+				});
+			}
+	</script>
+	<script type="text/javascript">
+	function timer(){
+		setInterval(function(){
+			var today=new Date();
+			var sec=today.getSeconds(),
+				min=today.getMinutes(),
+				hrs=today.getHours(),
+				day=today.getDate(),
+				month=today.getMonth()+1,
+				year=today.getFullYear();
+
+				if(day<10) day="0"+day;
+				if(hrs<10) hrs="0"+hrs;
+				if(min<10) min="0"+min;
+				if(sec<10) sec="0"+sec;
+				if(month<10) month="0"+month;
+				$("#timer").html(day+"-"+month+"-"+year+"    "+hrs+":"+min+":"+sec);
+		},1000);
+	}
+	</script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+	//Handling socket.io Events
+		var socket=io.connect("http://localhost:8080");
+	</script>
+
+<script type="text/javascript">
+	$(document).ready(
+		function(){
+			$("#email").hide();
+			$("#pwd").hide();
+			$("#lbl_pass").hide();
+			$("#login-submit").hide();
+			$("#alert-reg").hide();
+
+				$('input:radio[name=login_with]').change(function(){				
+					if($("input:radio[name=login_with]:checked").val()=="reg_number"){
+						$("#mode").html("Registration Number");
+						$("#email").attr("type","text");
+						$("#email").attr("placeholder","Registration Number");
+						$("#email").show(1000);
+						$("#pwd").show(1000);
+						$("#lbl_pass").show(1000);
+						$("#login-submit").show(1000);
+						$("#email").val('');
+						$("#pwd").val('');
+						$("#error-login").html('');
+						$("#error-pwd").html('');
+						$("#error-email").html('');
+					}else if($("input:radio[name=login_with]:checked").val()=="id_number"){
+						$("#mode").html("Id Number");
+						$("#email").attr("type","text");
+						$("#email").attr("placeholder","Id Number");
+						$("#email").show(1000);
+						$("#pwd").show(1000);
+						$("#lbl_pass").show(1000);
+						$("#login-submit").show(1000);
+						$("#email").val('');
+						$("#pwd").val('');
+						$("#error-login").html('');
+						$("#error-pwd").html('');
+						$("#error-email").html('');
+					}else if($("input:radio[name=login_with]:checked").val()=="email"){
+						$("#mode").html("Email address");
+						$("#email").attr("type","email");
+						$("#email").attr("placeholder","Email Address");
+						$("#email").show(1000);
+						$("#pwd").show(1000);
+						$("#lbl_pass").show(1000);
+						$("#login-submit").show(1000);
+						$("#email").val('');
+						$("#pwd").val('');
+						$("#error-login").html('');
+						$("#error-pwd").html('');
+						$("#error-email").html('');
+					}
+				});
+
+			//Handle login form submission
+				$("#loginForm").submit(function(event){
+						event.preventDefault();
+						$choice=$("input:radio[name=login_with]:checked").val();
+						$email=$("#email").val();
+						$password=$("#pwd").val();
+
+						$error_pass=false;
+						$error_email=false;
+
+						if(!$choice){
+							reset();
+							alertify.alert("Please Select a Login Method before Submitting Form");
+							return false;
+						}
+						
+						if($password==''){
+							$error_pass=true;
+							$("#error-pwd").html("<div class='alert alert-danger-reg'>Please Enter a Password<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+						}
+						
+						if($error_email==false){
+							$("#error-email").html('');
+						}
+
+						if($error_pass==false){
+							$("#error-pwd").html('');
+						}
+
+						if(!$error_email && !$error_pass){
+							var data={};
+							data.choice=$choice;
+							data.address=$email;
+							data.password=$password;
+							$.ajax({
+								url:'/login',
+								type:'POST',
+								data:JSON.stringify(data),
+								contentType:'application/json',
+								success:function(data){
+									if(data.error){
+									$("#error-login").html("<div class='alert alert-danger'>"+data.message+"<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+									}else if(!data.error){
+										if(data.page=="users"){
+											window.location.href="/u";
+										}else if(data.page=="voters"){
+											window.location.href="/v";
+										}
+									}
+								}
+							});
+						}
+				}); 
+
+				$("#reg_users").submit(function(event){
+					event.preventDefault();
+					$username=$("#userName").val();
+					$emailAdd=$("#inputEmail").val();
+					$idNumber=$("#idNumber").val();
+					$gender=$("input:radio[name=rad_gender]:checked").val();
+					$position=$("#position").val();
+					$password=$("#inputPassword").val();
+					$conf_pass=$("#inputPasswordConf").val();
+					$userType=$("#userType").val();
+
+					$err_un=false;
+					$err_ea=false;
+					$err_pass=false;
+					$err_id=false;
+					$err_gd=false;
+					$err_pos=false;
+
+					if($username.trim()=='' || $username.trim().length==0){
+						$err_un=true;
+						$("#error-username").html("<div class='alert alert-danger-reg'>Username is Required<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($username.trim()!='' && $username.trim().length>0){
+						$pattern=/^[a-zA-Z]{1,20}\s[a-zA-Z]{1,20}$/;
+						if($pattern.test($username)==false){
+							$err_un=true;
+							$("#error-username").html("<div class='alert alert-danger-reg'>Provide a First and Last Name with space between<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+						}else{
+							$err_un=false;
+							$("#error-username").html('');
+						}
+					}				
+
+					if($emailAdd.trim()=='' || $emailAdd.trim()==0){
+						$err_ea=true;
+						$("#error-address").html("<div class='alert alert-danger-reg'>Email address is Required<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($emailAdd!='' && $emailAdd.length>0){
+						$pattern=/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+						if($pattern.test($emailAdd)==false){
+							$err_ea=true;
+							$("#error-address").html("<div class='alert alert-danger-reg'>Invalid Email Address<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+						}else{
+							$err_ea=false;
+							$("#error-address").html('');
+						}
+					}
+
+					
+					if($idNumber.trim()==''){
+						$err_id=true;
+						$("#error-id").html("<div class='alert alert-danger-reg'>ID Number is Required<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($idNumber.trim()!='' && $idNumber.trim().length>0){
+						$pattern=/^\d{8}$/;
+						if($pattern.test($idNumber.trim())==false){
+							$err_id=true;
+							$("#error-id").html("<div class='alert alert-danger-reg'>ID Number Must be 8 Numbers<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+						}else{
+							$("#error-id").html('');
+						}
+					}
+					
+
+					if($password.trim()==''){
+						$err_pass=true;
+						$("#error-pass").html("<div class='alert alert-danger-reg'>Password is Required<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($password.trim().length>0 && $password.trim().length<8){
+						$err_pass=true;
+						$("#error-pass").html("<div class='alert alert-danger-reg'>Password Must be atleast 8 Characters<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($password.trim().length>8 && $password.trim()!=$conf_pass.trim()){
+						$err_pass=true;
+						$("#error-pass").html("<div class='alert alert-danger-reg'>Password Should Match Confirm Password<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($password.trim().length>8 && $password.trim()==$conf_pass.trim()){
+						$err_pass=false;
+						$("#error-pass").html('');
+					}
+
+					if(!$gender){
+						$err_gd=true;
+						$("#error-gender").html("<div class='alert alert-danger-reg'>Select a Gender<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($gender){
+						$err_gd=false;
+						$("#error-gender").html('');
+					}
+
+					if($position==''){
+						$err_pos=true;
+						$("#error-position").html("<div class='alert alert-danger-reg'>Select User Position<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else{
+						$err_pos=false;
+						$("#error-position").html('');
+					}
+					
+					
+					if(!$err_un && !$err_ea && !$err_id && !$err_pass && !$err_gd && !$err_pos){
+						var data_reg={};
+							data_reg.username=$username;
+							data_reg.emailAdd=$emailAdd;
+							data_reg.idNumber=$idNumber;
+							data_reg.gender=$gender;
+							data_reg.position=$position;
+							data_reg.password=$password;
+							data_reg.conf_pass=$conf_pass;
+							data_reg.userType=$userType;
+						$.ajax({
+								url:'/ru',
+								type:'POST',
+								data:JSON.stringify(data_reg),
+								contentType:'application/json',
+								success:function(data){
+									if(data.errorValid){
+										var err="";
+										for (var i = data.message.length - 1; i >= 0; i--) {
+											err+=data.message[i]
+										};
+										alert(err);
+									}else if(data.errorDB){
+										alert(data.message);
+									}else if(!data.errorDB){
+										alert(data.message);
+									}
+								}
+							});
+					}					
+				}); 
+
+    			$("#reg_voters").submit(function(event){
+					event.preventDefault();
+					$voterName=$("#voterName").val();
+					$emailAdd=$("#inputEmail").val();
+					$regNumber=$("#regNumber").val();
+					$gender=$("input:radio[name=rad_gender]:checked").val();
+					$residence=$("input:radio[name=rad_res]:checked").val();
+					$password=$("#inputPassword").val();
+					$conf_pass=$("#inputPasswordConf").val();
+					$userType=$("#userType").val();
+
+					$err_vn=false;
+					$err_ea=false;
+					$err_pass=false;
+					$err_reg=false;
+					$err_gd=false;
+					$err_res=false;
+
+					if($voterName.trim()=='' || $voterName.trim().length==0){
+						$err_vn=true;
+						$("#error-votername").html("<div class='alert alert-danger-reg'>Voter Name is Required<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($voterName.trim()!='' && $voterName.trim().length>0){
+						$pattern=/^[a-zA-Z]{1,20}\s[a-zA-Z]{1,20}$/;
+						if($pattern.test($voterName.trim())==false){
+							$err_vn=true;
+							$("#error-votername").html("<div class='alert alert-danger-reg'>Provide a First and Last Name with space between<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+						}else{
+							$err_vn=false;
+							$("#error-votername").html('');
+						}
+					}				
+
+					if($emailAdd.trim()=='' || $emailAdd.trim()==0){
+						$err_ea=true;
+						$("#error-address").html("<div class='alert alert-danger-reg'>Email address is Required<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($emailAdd!='' && $emailAdd.length>0){
+						$pattern=/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+						if($pattern.test($emailAdd.trim())==false){
+							$err_ea=true;
+							$("#error-address").html("<div class='alert alert-danger-reg'>Invalid Email Address<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+						}else{
+							$err_ea=false;
+							$("#error-address").html('');
+						}
+					}
+
+					
+					if($regNumber.trim()==''){
+						$err_reg=true;
+						$("#error-reg").html("<div class='alert alert-danger-reg'>ID Number is Required<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($regNumber.trim()!='' && $regNumber.trim().length>0){
+						$pattern=/^[a-zA-Z]{3}-\d{3}-\d{3}\/(201[0-7])$/;
+						if($pattern.test($regNumber.trim())==false){
+							$err_reg=true;
+							$("#error-reg").html("<div class='alert alert-danger-reg'>Registration Number Must be of the Format AAA-000-000/YYYY<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+						}else{
+							$("#error-reg").html('');
+						}
+					}
+					
+
+					if($password.trim()==''){
+						$err_pass=true;
+						$("#error-pass").html("<div class='alert alert-danger-reg'>Password is Required<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($password.trim().length>0 && $password.trim().length<8){
+						$err_pass=true;
+						$("#error-pass").html("<div class='alert alert-danger-reg'>Password Must be atleast 8 Characters<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($password.trim().length>8 && $password.trim()!=$conf_pass.trim()){
+						$err_pass=true;
+						$("#error-pass").html("<div class='alert alert-danger-reg'>Password Should Match Confirm Password<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($password.trim().length>8 && $password.trim()==$conf_pass.trim()){
+						$err_pass=false;
+						$("#error-pass").html('');
+					}
+
+					if(!$gender){
+						$err_gd=true;
+						$("#error-gender").html("<div class='alert alert-danger-reg'>Select a Gender<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($gender){
+						$err_gd=false;
+						$("#error-gender").html('');
+					}
+				
+					if(!$residence){
+						$err_res=true;
+						$("#error-res").html("<div class='alert alert-danger-reg'>Select a Gender<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($gender){
+						$err_res=false;
+						$("#error-res").html('');
+					}
+				
+					
+					if(!$err_vn && !$err_ea && !$err_reg && !$err_pass && !$err_gd && !$err_res){
+						var data_reg={};
+							data_reg.voterName=$voterName;
+							data_reg.emailAdd=$emailAdd;
+							data_reg.regNumber=$regNumber;
+							data_reg.gender=$gender;
+							data_reg.password=$password;
+							data_reg.conf_pass=$conf_pass;
+							data_reg.userType=$userType;
+							data_reg.residence=$residence;
+						$.ajax({
+								url:'/rv',
+								type:'POST',
+								data:JSON.stringify(data_reg),
+								contentType:'application/json',
+								success:function(data){
+									if(data.errorValid){
+										var err="";
+										for (var i = data.message.length - 1; i >= 0; i--) {
+											err+=data.message[i]
+										};
+										alert(err);
+									}else if(data.errorDB){
+										alert(data.message);
+									}else if(!data.errorDB && !data.errorValid){
+										$("#alert-reg").show();
+										$("#alert-reg").html("Voter Registration Succesful");
+										setTimeout(function(){
+											window.location.reload(true);
+										},2000);	
+									}
+								}
+							});
+					}					
+				}); 
+
+    			$("#reg_candidates").submit(function(event){
+					event.preventDefault();
+					$userName=$("#userName").val();
+					$emailAdd=$("#inputEmail").val();
+					$regNumber=$("#regNumber").val();
+					$gender=$("input:radio[name=rad_gender]:checked").val();
+					$position=$("#position").val();
+					$userType=$("#userType").val();
+
+					$err_un=false;
+					$err_ea=false;	
+					$err_reg=false;
+					$err_gd=false;
+					$err_pos=false;
+
+					if($userName.trim()=='' || $userName.trim().length==0){
+						$err_un=true;
+						$("#error-username").html("<div class='alert alert-danger-reg'>Username is Required<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($userName.trim()!='' && $userName.trim().length>0){
+						$pattern=/^[a-zA-Z]{1,20}\s[a-zA-Z]{1,20}$/;
+						if($pattern.test($userName)==false){
+							$err_un=true;
+							$("#error-username").html("<div class='alert alert-danger-reg'>Provide a First and Last Name with space between<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+						}else{
+							$err_un=false;
+							$("#error-username").html('');
+						}
+					}			
+
+					if($emailAdd.trim()=='' || $emailAdd.trim()==0){
+						$err_ea=true;
+						$("#error-address").html("<div class='alert alert-danger-reg'>Email address is Required<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($emailAdd!='' && $emailAdd.length>0){
+						$pattern=/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+						if($pattern.test($emailAdd.trim())==false){
+							$err_ea=true;
+							$("#error-address").html("<div class='alert alert-danger-reg'>Invalid Email Address<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+						}else{
+							$err_ea=false;
+							$("#error-address").html('');
+						}
+					}
+
+					
+					if($regNumber.trim()==''){
+						$err_reg=true;
+						$("#error-reg").html("<div class='alert alert-danger-reg'>ID Number is Required<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($regNumber.trim()!='' && $regNumber.trim().length>0){
+						$pattern=/^[a-zA-Z]{3}-\d{3}-\d{3}\/(201[0-7])$/;
+						if($pattern.test($regNumber.trim())==false){
+							$err_reg=true;
+							$("#error-reg").html("<div class='alert alert-danger-reg'>Registration Number Must be of the Format AAA-000-000/YYYY<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+						}else{
+							$("#error-reg").html('');
+						}
+					}
+
+					if(!$gender){
+						$err_gd=true;
+						$("#error-gender").html("<div class='alert alert-danger-reg'>Select a Gender<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else if($gender){
+						$err_gd=false;
+						$("#error-gender").html('');
+					}
+
+					if($position==''){
+						$err_pos=true;
+						$("#error-position").html("<div class='alert alert-danger-reg'>Select User Position<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button></div>");
+					}else{
+						$err_pos=false;
+						$("#error-position").html('');
+					}
+				
+					
+					if(!$err_un && !$err_ea && !$err_reg && !$err_pos && !$err_gd){
+						var data_reg={};
+							data_reg.candName=$userName;
+							data_reg.emailAdd=$emailAdd;
+							data_reg.regNumber=$regNumber;
+							data_reg.gender=$gender;
+							data_reg.position=$position;
+							data_reg.userType=$userType;
+						$.ajax({
+								url:'/rc',
+								type:'POST',
+								data:JSON.stringify(data_reg),
+								contentType:'application/json',
+								success:function(data){
+									if(data.errorValid){
+										var err="";
+										for (var i = data.message.length - 1; i >= 0; i--) {
+											err+=data.message[i]
+										};
+										alert(err);
+									}else if(data.errorDB){
+										alert(data.message);
+									}else if(!data.errorDB){
+										alert(data.message);
+									}
+								}
+							});
+					}					
+				}); 
+
+    			$("#form_unlock").submit(function(event){
+    				event.preventDefault();
+    				alert("Unlock "+$("#data_id").val());
+    			})
+		});
+</script>
+<script>
+          function filter2 (phrase, _id){
+              var words = phrase.value.toLowerCase().split(" ");
+              var table = document.getElementById('sorter');
+              var ele;
+              for (var r = 1; r < table.rows.length; r++){
+                  ele = table.rows[r].innerHTML.replace(/<[^>]+>/g,"");
+                  var displayStyle = 'none';
+                  for (var i = 0; i < words.length; i++) {
+                      if (ele.toLowerCase().indexOf(words[i])>=0)
+                          displayStyle = '';
+                      else {
+                          displayStyle = 'none';
+                          break;
+                      }
+                  }
+                  table.rows[r].style.display = displayStyle;
+              }
+          }
+</script>
+	<style type="text/css">
+	.table_heads{
+		text-align: center;
+		display: block;
+		padding: 10px;
+		margin: 5px 0 5px 0;
+		color: #FFF;
+		background-color: #a17917;
+		border-color: #46B8DA;
+		font-size: 21px;
+		font-family: FontAwesome;
+		border-radius: 0px;
+	}
+	.header-sec{
+		background-color: #a17917;
+		text-align: center;
+		font-size: 25px;
+		height: 45px;
+		}
+
+	.footer_sec{
+		background-color: #006442;
+	}
+
+	.badge{
+		background-color: #006442;
+	}
+
+	.login{
+		background-color: #37BC9B;
+		border-color: #37BC9B;
+		display: block;
+		color: white;
+		margin: 4px;
+		width: 60%;
+	}
+
+	.profile{
+		background-color: #22A7F0;
+		border-color: #F5D76E;
+		display: block;
+		color: white;
+		margin: 4px;
+		width: 60%;
+	}
+
+	.logout{
+		background-color: #CF000F;
+		border-color: #37BC9B;
+		display: block;
+		color: white;
+		margin: 4px;
+		width: 60%;
+	}
+
+	.btn-profile{
+		background-color: #26A65b;
+		border-color: #A17917;
+		border-radius: 0px;
+		border-width: 2px;
+		display: block;
+		color: white;
+		margin: 4px;
+		width: 60%;
+	}
+
+	.center {
+	    margin-top:50px;   
+	}
+	.prof-pic{
+		width: 171px;
+		height: 180px;
+		border-radius: 50%;
+		border-color: #A17917;
+		border-width: 2px;
+	}
+	.table-users .list-group-item{
+		padding: 2px;
+	}
+
+	.modal-header {
+	    padding-bottom: 5px;
+	}
+
+	.modal-footer {
+	        padding: 0;
+	}
+	    
+	.modal-footer .btn-group button {
+	    height:40px;
+	    border-top-left-radius : 0;
+	    border-top-right-radius : 0;
+	    border: none;
+	}
+	    
+	.modal-footer .btn-group:last-child > button {
+	    border-right: 0;
+	}
+	.alert-success{
+		background-color: #26A65B;
+		color: white;
+		font-family: andalus;
+	}
+	.alert-danger{
+		background-color: #CF000F;
+		color: white;
+		font-family: andalus;
+	}
+	.alert-danger-reg{
+		background-color: #DC3023;
+		color: white;
+		font-family: andalus;
+		padding: 5px;
+		margin-bottom: 5px;
+	}
+
+	.form-reg{
+		margin-bottom: 0px;
+	}
+	#table_results{
+		background-color: #ca6924;
+	}
+	#table_results tfoot{
+		background-color: #26c281;
+	}
+	#table_results tr.even{
+		background-color: #ecf0f1;
+	}
+	#table_results tr.odd{
+		background-color: #d2d7d3;
+	}
+
+	.table_display{
+		background-color: #6C7A89;
+	}
+	
+	.table-users tr.even{
+		background-color: #264348;
+	}
+	.table_display tr.odd{
+		background-color: #264348;
+	}
+	.table-users tfoot{
+		background-color: #26c281;
+	}
+
+	.table_display tr.even{
+		background-color: #6C7A89;
+	}
+	.table-users tr.odd{
+		background-color: #89C4F4;
+	}
+
+	.table-profile{
+		background-color: #757D75;
+		border-top: 0;
+	}
+	.naming{
+		color: #9D2933;
+	}
+	.values{
+	
+	}
+
+	body{
+		background-color: #264348;
+		color:black;
+	}
+	li > a:focus {
+	    text-decoration: none;
+	    color: #FFF;
+	    background-color: #2A9FD6;
+	}
+	.myoptions a{
+		background-color: #222;
+		color: white;
+	}
+	.myoptions a:focus{
+		display: block;
+		background-color: #ca6924;
+	}
+
+	.myoptions a:hover{
+		background-color: black;
+		color: white;
+	}
+
+	.myoptionsv a{
+		background-color: #6b9362;
+		color: white;
+	}
+	.myoptionsv a:focus{
+		display: block;
+		background-color: #ca6924;
+	}
+
+	.myoptionsv a:hover{
+		background-color: #fff;
+		color: #000;
+		font-style: italic;
+	}
+
+	.dropdown-menu > li > a {
+	    display: block;
+	    padding: 3px 20px;
+	    clear: both;
+	    font-weight: normal;
+	    line-height: 1.42857;
+	    color: #FFF;
+	    white-space: nowrap;
+	}
+
+	.register-info-wraper {
+	  background: #222;
+	  padding: 10px;
+	}
+
+	.has-error{
+		border-width: 3px;
+		  border-color: #b94a48;
+		  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+		  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	}
+
+	.has-error:focus{
+		border-width: 3px;
+		  border-color: #953b39;
+		  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+		  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+	}
+
+	.reg-form{
+		background: rgba(0, 0, 0, 0.2) none repeat scroll 0% ;
+		color: white;
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		font-size: 14px;
+	}
+	</style>

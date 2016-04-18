@@ -1,0 +1,46 @@
+<div class="row">
+	<div class="col-lg-4"></div>
+	<div class="col-lg-4">
+		<div class="label label-primary center table_heads">Presidential Results</div>
+	</div>
+	<div class="col-lg-4"></div>	
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<table id="table_results" class="table table-striped table-bordered" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<th>Candidate Name</th>
+						<th>Vote Count</th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th>Candidate Name</th>
+						<th>Vote Count</th>	
+					</tr>
+				</tfoot>
+				<tbody>
+					<tr>
+						<td><%= candidates[8].cand_name %></td>
+						<td id="pca"><%= initial.pca %></td>	
+					</tr>
+					<tr>
+						<td><%= candidates[9].cand_name %></td>
+						<td id="pcb"><%= initial.pcb %></td>	
+					</tr>
+					<tr>
+						<td><%= candidates[10].cand_name %></td>
+						<td id="pcc"><%= initial.pcc %></td>
+						
+					</tr>
+					<tr>
+						<td><%= candidates[11].cand_name %></td>
+						<td id="pcd"><%= initial.pcd %></td>	
+					</tr>
+				</tbody>
+		</table>
+	</div>
+</div>
+
+
